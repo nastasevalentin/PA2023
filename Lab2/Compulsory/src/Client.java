@@ -3,10 +3,12 @@ import java.time.LocalTime;
 public class Client {
     private String name;
     private LocalTime[] visitingTimeInterval;
+    private ClientType type;
 
-    public Client(String name, LocalTime start, LocalTime end) {
+    public Client(String name, LocalTime start, LocalTime end, ClientType type) {
         this.name = name;
         this.visitingTimeInterval = new LocalTime[]{start, end};
+        this.type = type;
     }
 
     public String getName() {
@@ -28,7 +30,8 @@ public class Client {
     @Override
     public String toString() {
         return "Client{" +
-                "name='" + name + '\'' +
+                "name='" + name + ",\'" +
+                "type='" + type + "'"+
                 ", visitingTimeInterval=" + visitingTimeInterval[0] + " - " + visitingTimeInterval[1] +
                 '}';
     }
