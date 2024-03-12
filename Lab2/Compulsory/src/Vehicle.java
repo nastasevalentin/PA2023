@@ -1,6 +1,7 @@
 import java.util.List;
+import java.util.Objects;
 
-public class Vehicle {
+public abstract class Vehicle {
     private String name;
     private Depot depot;
     private List<Client> clients;
@@ -15,43 +16,26 @@ public class Vehicle {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Depot getDepot() {
         return depot;
-    }
-
-    public void setDepot(Depot depot) {
-        this.depot = depot;
-    }
-
-    public void returnToDepot() {
-        System.out.println(name + " is returning to " + depot.getName());
     }
 
     public List<Client> getClients() {
         return clients;
     }
 
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
-    }
-
-    public void tourClients() {
-        System.out.println(name + " is starting from " + depot.getName());
-        for (Client client : clients) {
-            System.out.println(name + " is visiting " + client.getName());
-        }
-        System.out.println(name + " is returning to " + depot.getName());
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicle vehicle = (Vehicle) o;
+        return Objects.equals(name, vehicle.name);
     }
 
     @Override
-    public String toString() {
-        return "Vehicle{" +
-                "name='" + name + '\'' +
-                ", depot=" + depot.getName() +
-                '}';
+    public int hashCode() {
+        return Objects.hash(name);
     }
+
+    public abstract void specificMethod();
 }

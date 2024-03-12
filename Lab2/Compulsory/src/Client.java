@@ -1,13 +1,16 @@
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class Client {
     private String name;
-    private LocalTime[] visitingTimeInterval;
+    private LocalTime start;
+    private LocalTime end;
     private ClientType type;
 
     public Client(String name, LocalTime start, LocalTime end, ClientType type) {
         this.name = name;
-        this.visitingTimeInterval = new LocalTime[]{start, end};
+        this.start = start;
+        this.end = end;
         this.type = type;
     }
 
@@ -15,24 +18,16 @@ public class Client {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalTime[] getVisitingTimeInterval() {
-        return visitingTimeInterval;
-    }
-
-    public void setVisitingTimeInterval(LocalTime start, LocalTime end) {
-        this.visitingTimeInterval = new LocalTime[]{start, end};
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return Objects.equals(name, client.name);
     }
 
     @Override
-    public String toString() {
-        return "Client{" +
-                "name='" + name + ",\'" +
-                "type='" + type + "'"+
-                ", visitingTimeInterval=" + visitingTimeInterval[0] + " - " + visitingTimeInterval[1] +
-                '}';
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
