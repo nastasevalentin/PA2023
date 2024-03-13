@@ -22,17 +22,4 @@ public class Depot {
     public List<Vehicle> getVehicles() {
         return vehicles;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Depot depot = (Depot) o;
-        return Objects.equals(name, depot.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
 }
