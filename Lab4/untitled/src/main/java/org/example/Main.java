@@ -18,7 +18,7 @@ public class Main {
         Person passenger3 = new Person(faker.name().fullName(), destination1, false, faker.number().numberBetween(20, 60));
 
 
-        Carpool carpool = new Carpool();
+            Person person = new Person(name, destination, isDriver, age);
 
         carpool.addPerson(driver1);
         carpool.addPerson(driver2);
@@ -26,29 +26,15 @@ public class Main {
         carpool.addPerson(passenger2);
         carpool.addPerson(passenger3);
 
-        List<Person> peopleCopy = new ArrayList<>(carpool.getPeople());
-
-        List<Pair<Person, Person>> matches = carpool.matchDriversWithPassengers();
-
-        for (Pair<Person, Person> match : matches) {
-            System.out.println(match.getFirst().getName() + " is matched with " + match.getSecond().getName());
+            iterator.remove();
         }
 
-        LinkedList<Person> drivers = peopleCopy.stream()
-                .filter(Person::isDriver)
-                .sorted(Comparator.comparingInt(Person::getAge))
-                .collect(Collectors.toCollection(LinkedList::new));
-
-        TreeSet<Person> passengers = peopleCopy.stream()
-                .filter(p -> !p.isDriver())
-                .collect(Collectors.toCollection(TreeSet::new));
-
-        System.out.println("Drivers sorted by age:");
+        System.out.println("Drivers:");
         for (Person driver : drivers) {
-            System.out.println(driver.getName() + ", " + driver.getAge());
+            System.out.println(driver.getName());
         }
 
-        System.out.println("Passengers sorted by name:");
+        System.out.println("Passengers:");
         for (Person passenger : passengers) {
             System.out.println(passenger.getName());
         }
@@ -72,4 +58,3 @@ public class Main {
             }
         }
     }
-}
