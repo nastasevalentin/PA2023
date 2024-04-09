@@ -28,6 +28,7 @@ public class ConfigPanel extends JPanel {
             int rows = (int) spinnerR.getValue();
             int cols = (int) spinnerC.getValue();
             frame.getCanvas().init(rows, cols);
+            frame.getGame().reset();
             frame.getCanvas().repaint();
         });
 
