@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
 
 public class Frame {
     private JFrame frame;
@@ -17,6 +19,8 @@ public class Frame {
     private JTextField nodeField;
     private JTextField edgeField;
     private JPanel graphPanel;
+    private JButton routeButton;
+    private JButton cycleButton;
 
     public Frame() {
         frame = new JFrame("Number Generator");
@@ -38,9 +42,33 @@ public class Frame {
         edgeField = new JTextField(10);
         inputPanel.add(edgeField);
 
+        routeButton = new JButton("Find Route");
+        inputPanel.add(routeButton);
+
         graphPanel = new JPanel();
         panel.add(graphPanel, BorderLayout.CENTER);
 
+        cycleButton = new JButton("Find Cycles");
+        inputPanel.add(cycleButton);
+
+        cycleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cycleButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                    }
+                });
+            }
+        });
+
+        routeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,8 +81,8 @@ public class Frame {
                         if (model.isEdge(cell)) {
                             Object edge = model.getValue(cell);
                             if (edge instanceof DefaultWeightedEdge) {
-                                double weight = graph.getGraph().getEdgeWeight((DefaultWeightedEdge) edge);
-                                return String.format("%.2f", weight);
+                                int weight = (int) graph.getGraph().getEdgeWeight((DefaultWeightedEdge) edge);
+                                return String.format("%d", weight);
                             }
                         }
                         return super.convertValueToString(cell);

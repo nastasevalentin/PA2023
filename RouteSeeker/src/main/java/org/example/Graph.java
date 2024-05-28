@@ -3,11 +3,14 @@ package org.example;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
-import java.util.Random;
+import java.util.*;
 
 public class Graph {
     private final SimpleWeightedGraph<Integer, DefaultWeightedEdge> graph;
 
+    private List<List<Integer>> cycles = new ArrayList<>();
+
+    private int count = 0;
     public Graph(int nodes, int edges) {
         graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
         Random random = new Random();
@@ -17,11 +20,7 @@ public class Graph {
         for (int i = 0; i < nodes - 1; i++) {
             DefaultWeightedEdge edge = graph.addEdge(i, i + 1);
             if (edge != null) {
-                graph.setEdgeWeight(edge, random.nextDouble());
-            }
-            edge = graph.addEdge(i + 1, i);
-            if (edge != null) {
-                graph.setEdgeWeight(edge, random.nextDouble());
+                graph.setEdgeWeight(edge, random.nextInt(10) + 1);
             }
         }
         int addedEdges = nodes - 1;
@@ -31,18 +30,19 @@ public class Graph {
             if (node1 != node2 && !graph.containsEdge(node1, node2)) {
                 DefaultWeightedEdge edge = graph.addEdge(node1, node2);
                 if (edge != null) {
-                    graph.setEdgeWeight(edge, random.nextDouble());
-                }
-                edge = graph.addEdge(node2, node1);
-                if (edge != null) {
-                    graph.setEdgeWeight(edge, random.nextDouble());
+                    graph.setEdgeWeight(edge, random.nextInt(10) + 1);
                 }
                 addedEdges++;
             }
         }
+
     }
+
+
+
 
     public SimpleWeightedGraph<Integer, DefaultWeightedEdge> getGraph() {
         return graph;
     }
+
 }
