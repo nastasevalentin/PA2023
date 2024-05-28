@@ -4,7 +4,7 @@ import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
 import org.jgrapht.ext.JGraphXAdapter;
-import org.example.Graph.CustomEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,20 +23,23 @@ public class Frame {
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new BorderLayout());
         frame.add(panel);
 
+        JPanel inputPanel = new JPanel();
+        panel.add(inputPanel, BorderLayout.NORTH);
+
         button = new JButton("Generate");
-        panel.add(button);
+        inputPanel.add(button);
 
         nodeField = new JTextField(10);
-        panel.add(nodeField);
+        inputPanel.add(nodeField);
 
         edgeField = new JTextField(10);
-        panel.add(edgeField);
+        inputPanel.add(edgeField);
 
         graphPanel = new JPanel();
-        panel.add(graphPanel);
+        panel.add(graphPanel, BorderLayout.CENTER);
 
         button.addActionListener(new ActionListener() {
             @Override
@@ -44,11 +47,15 @@ public class Frame {
                 int nodes = Integer.parseInt(nodeField.getText());
                 int edges = Integer.parseInt(edgeField.getText());
                 Graph graph = new Graph(nodes, edges);
-                JGraphXAdapter<Integer, CustomEdge> graphAdapter = new JGraphXAdapter<Integer, CustomEdge>(graph.getGraph()) {
+                JGraphXAdapter<Integer, DefaultWeightedEdge> graphAdapter = new JGraphXAdapter<Integer, DefaultWeightedEdge>(graph.getGraph()) {
                     @Override
                     public String convertValueToString(Object cell) {
                         if (model.isEdge(cell)) {
-                            return ""; // return empty string for edge labels
+                            Object edge = model.getValue(cell);
+                            if (edge instanceof DefaultWeightedEdge) {
+                                double weight = graph.getGraph().getEdgeWeight((DefaultWeightedEdge) edge);
+                                return String.format("%.2f", weight);
+                            }
                         }
                         return super.convertValueToString(cell);
                     }
