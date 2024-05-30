@@ -87,6 +87,21 @@ public class Graph {
         return cycles;
     }
 
+    public List<Integer> findRoute(int desiredDistance) {
+        for (List<Integer> cycle : cycles) {
+            int sum = 0;
+            for (int i = 0; i < cycle.size() - 1; i++) {
+                DefaultWeightedEdge edge = graph.getEdge(cycle.get(i), cycle.get(i + 1));
+                if (edge != null) {
+                    sum += graph.getEdgeWeight(edge);
+                }
+            }
+            if (sum == desiredDistance) {
+                return cycle;
+            }
+        }
+        return new ArrayList<>();
+    }
 
     public SimpleWeightedGraph<Integer, DefaultWeightedEdge> getGraph() {
         return graph;

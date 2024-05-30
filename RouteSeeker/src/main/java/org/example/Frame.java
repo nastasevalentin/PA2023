@@ -20,6 +20,7 @@ public class Frame {
     private JTextField edgeField;
     private JPanel graphPanel;
     private JButton routeButton;
+    private JTextField routeField;
     private JButton cycleButton;
     private Graph graph;
 
@@ -46,6 +47,9 @@ public class Frame {
         routeButton = new JButton("Find Route");
         inputPanel.add(routeButton);
 
+        routeField = new JTextField(10);
+        inputPanel.add(routeField);
+
         graphPanel = new JPanel();
         panel.add(graphPanel, BorderLayout.CENTER);
 
@@ -68,7 +72,15 @@ public class Frame {
         routeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if (graph != null) {
+                    int desiredSum = Integer.parseInt(routeField.getText());
+                    List<Integer> cycle = graph.findRoute(desiredSum);
+                    if (cycle.isEmpty()) {
+                        System.out.println("No cycle found with the desired sum.");
+                    } else {
+                        System.out.println("Cycle with the desired sum: " + cycle);
+                    }
+                }
             }
         });
         button.addActionListener(new ActionListener() {
