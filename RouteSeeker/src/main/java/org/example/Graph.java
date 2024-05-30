@@ -7,8 +7,10 @@ import java.util.*;
 
 public class Graph {
     private final SimpleWeightedGraph<Integer, DefaultWeightedEdge> graph;
-
     private List<List<Integer>> cycles = new ArrayList<>();
+    private boolean[] visited;
+    private int[] path;
+    private int pathIndex = 0;
 
     private int count = 0;
     public Graph(int nodes, int edges) {
@@ -35,14 +37,67 @@ public class Graph {
                 addedEdges++;
             }
         }
-
+        printEdges();
     }
 
+    public void findAllCycles() {
+        visited = new boolean[graph.vertexSet().size()];
+        path = new int[graph.vertexSet().size()];
 
+        for (Integer vertex : graph.vertexSet()) {
+            findCyclesInDFS(vertex, vertex);
+
+            Arrays.fill(visited, false);
+        }
+    }
+
+    private void findCyclesInDFS(int current, int start) {
+        visited[current] = true;
+        path[pathIndex] = current;
+        pathIndex++;
+
+        for (DefaultWeightedEdge edge : graph.edgesOf(current)) {
+            if (graph.getEdgeSource(edge) != current) {
+                continue;
+            }
+            int next = graph.getEdgeTarget(edge);
+            if (next == start && pathIndex > 2) {
+                saveCycle();
+            } else if (!visited[next]) {
+                findCyclesInDFS(next, start);
+            }
+        }
+
+        visited[current] = false;
+        pathIndex--;
+    }
+
+    private void saveCycle() {
+        List<Integer> cycle = new ArrayList<>();
+        for (int i = 0; i < pathIndex; i++) {
+            cycle.add(path[i]);
+        }
+        if (graph.containsEdge(cycle.get(0), cycle.get(cycle.size() - 1))) {
+            cycle.add(path[0]);
+            cycles.add(cycle);
+        }
+    }
+
+    public List<List<Integer>> getCycles() {
+        return cycles;
+    }
 
 
     public SimpleWeightedGraph<Integer, DefaultWeightedEdge> getGraph() {
         return graph;
     }
 
+    public void printEdges() {
+        Set<DefaultWeightedEdge> edges = graph.edgeSet();
+        for (DefaultWeightedEdge edge : edges) {
+            int source = graph.getEdgeSource(edge);
+            int target = graph.getEdgeTarget(edge);
+            System.out.println("Edge from " + source + " to " + target);
+        }
+    }
 }

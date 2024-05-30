@@ -21,6 +21,7 @@ public class Frame {
     private JPanel graphPanel;
     private JButton routeButton;
     private JButton cycleButton;
+    private Graph graph;
 
     public Frame() {
         frame = new JFrame("Number Generator");
@@ -54,12 +55,13 @@ public class Frame {
         cycleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cycleButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-
+                if (graph != null) {
+                    graph.findAllCycles();
+                    List<List<Integer>> cycles = graph.getCycles();
+                    for (List<Integer> cycle : cycles) {
+                        System.out.println(cycle);
                     }
-                });
+                }
             }
         });
 
@@ -74,7 +76,7 @@ public class Frame {
             public void actionPerformed(ActionEvent e) {
                 int nodes = Integer.parseInt(nodeField.getText());
                 int edges = Integer.parseInt(edgeField.getText());
-                Graph graph = new Graph(nodes, edges);
+                graph = new Graph(nodes, edges);
                 JGraphXAdapter<Integer, DefaultWeightedEdge> graphAdapter = new JGraphXAdapter<Integer, DefaultWeightedEdge>(graph.getGraph()) {
                     @Override
                     public String convertValueToString(Object cell) {
