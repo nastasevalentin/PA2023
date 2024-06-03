@@ -57,10 +57,7 @@ public class Graph {
         pathIndex++;
 
         for (DefaultWeightedEdge edge : graph.edgesOf(current)) {
-            if (graph.getEdgeSource(edge) != current) {
-                continue;
-            }
-            int next = graph.getEdgeTarget(edge);
+            int next = graph.getEdgeSource(edge) == current ? graph.getEdgeTarget(edge) : graph.getEdgeSource(edge);
             if (next == start && pathIndex > 2) {
                 saveCycle();
             } else if (!visited[next]) {
@@ -87,7 +84,8 @@ public class Graph {
         return cycles;
     }
 
-    public List<Integer> findRoute(int desiredDistance) {
+    public List<List<Integer>> findRoute(int desiredDistance) {
+        List<List<Integer>> result = new ArrayList<>();
         for (List<Integer> cycle : cycles) {
             int sum = 0;
             for (int i = 0; i < cycle.size() - 1; i++) {
@@ -97,10 +95,14 @@ public class Graph {
                 }
             }
             if (sum == desiredDistance) {
-                return cycle;
+                List<Integer> reversedCycle = new ArrayList<>(cycle);
+                Collections.reverse(reversedCycle);
+                if (!result.contains(cycle) && !result.contains(reversedCycle)) {
+                    result.add(cycle);
+                }
             }
         }
-        return new ArrayList<>();
+        return result;
     }
 
     public SimpleWeightedGraph<Integer, DefaultWeightedEdge> getGraph() {

@@ -74,11 +74,13 @@ public class Frame {
             public void actionPerformed(ActionEvent e) {
                 if (graph != null) {
                     int desiredSum = Integer.parseInt(routeField.getText());
-                    List<Integer> cycle = graph.findRoute(desiredSum);
-                    if (cycle.isEmpty()) {
+                    List<List<Integer>> cycles = graph.findRoute(desiredSum);
+                    if (cycles.isEmpty()) {
                         System.out.println("No cycle found with the desired sum.");
                     } else {
-                        System.out.println("Cycle with the desired sum: " + cycle);
+                        for (List<Integer> cycle : cycles) {
+                            System.out.println("Cycle with the desired sum: " + cycle);
+                        }
                     }
                 }
             }
