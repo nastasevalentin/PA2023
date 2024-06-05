@@ -23,14 +23,21 @@ public class Frame {
     private JTextField routeField;
     private JButton cycleButton;
     private Graph graph;
+    private JTextArea textArea;
 
     public Frame() {
+        textArea = new JTextArea(5, 20);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        textArea.setEditable(false);
+
         frame = new JFrame("Number Generator");
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel(new BorderLayout());
         frame.add(panel);
+
+        panel.add(scrollPane, BorderLayout.SOUTH);
 
         JPanel inputPanel = new JPanel();
         panel.add(inputPanel, BorderLayout.NORTH);
@@ -62,9 +69,7 @@ public class Frame {
                 if (graph != null) {
                     graph.findAllCycles();
                     List<List<Integer>> cycles = graph.getCycles();
-                    for (List<Integer> cycle : cycles) {
-                        System.out.println(cycle);
-                    }
+                    textArea.setText("Cycles found");
                 }
             }
         });
@@ -76,10 +81,11 @@ public class Frame {
                     int desiredSum = Integer.parseInt(routeField.getText());
                     List<List<Integer>> cycles = graph.findRoute(desiredSum);
                     if (cycles.isEmpty()) {
-                        System.out.println("No cycle found with the desired sum.");
+                        textArea.setText("No cycle found with the desired sum.");
                     } else {
                         for (List<Integer> cycle : cycles) {
-                            System.out.println("Cycle with the desired sum: " + cycle);
+                            textArea.setText("Cycle with the desired sum: " + cycle);
+                            break;
                         }
                     }
                 }
